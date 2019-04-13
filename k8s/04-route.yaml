@@ -1,0 +1,29 @@
+---
+# Make sure to deploy Contour first:
+# $ kubectl apply -f https://j.hept.io/contour-deployment-rbac
+apiVersion: contour.heptio.com/v1beta1
+kind: IngressRoute
+metadata: 
+  name: app
+  namespace: k8s-contour-bgd-demo
+spec: 
+  virtualhost:
+    # Set your domain here.
+    #
+    # If you do not own a domain, you can still hit the endpoint using
+    # these commands:
+    # $ APP_ADDR=$(kubectl -n heptio-contour get svc contour -o json | jq -r ".status.loadBalancer.ingress[].ip")
+    # $ curl -w "\n" -H "Host: foobar.com" $APP_ADDR
+    fqdn: foobar.com
+  routes: 
+    - match: / 
+      services:
+        # All traffic is routed to app-v1 by default.
+        - name: app-v1
+          port: 8080
+          weight: 100
+        # Uncomment the following to enable app-v2:
+        # then update attribute weight to route traffic between app-v1 and app-v2.
+        #- name: app-v2
+        #  port: 8080
+        #  weight: 0
