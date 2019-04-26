@@ -13,7 +13,7 @@ spec:
     metadata:
       labels:
         role: app
-        # Set app version: use by service to discriminate app version.
+        # Set app version: used by service to discriminate app version.
         version: v1
     spec:
       containers:
@@ -48,7 +48,7 @@ spec:
     metadata:
       labels:
         role: app
-        # Set app version: use by service to discriminate app version.
+        # Set app version: used by service to discriminate app version.
         version: v2
     spec:
       containers:
