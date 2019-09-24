@@ -10,7 +10,7 @@ cluster.
 
 Make sure to install Contour first:
 ```bash
-$ kubectl apply -f https://j.hept.io/contour-deployment-rbac
+$ kubectl apply -f https://projectcontour.io/quickstart/contour.yaml
 ```
 
 Deploy a sample app to your cluster (`app-v1` and `app-v2`):
