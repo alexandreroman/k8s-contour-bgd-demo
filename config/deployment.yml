@@ -1,0 +1,66 @@
+#@ load("@ytt:data", "data")
+#@ load("helpers.star", "labels_for_comp")
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-v1
+  namespace: #@ data.values.NAMESPACE
+  labels: #@ labels_for_comp("app-v1", "v1")
+spec:
+  replicas: 1
+  selector:
+    matchLabels: #@ labels_for_comp("app-v1", "v1")
+  template:
+    metadata:
+      labels: #@ labels_for_comp("app-v1", "v1")
+    spec:
+      containers:
+      - name: app
+        image: alexandreroman/hello:v1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8080
+        livenessProbe:
+          httpGet:
+            port: http
+            path: /actuator/health
+          initialDelaySeconds: 60
+        readinessProbe:
+          httpGet:
+            port: http
+            path: /actuator/health
+          initialDelaySeconds: 15
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-v2
+  namespace: #@ data.values.NAMESPACE
+  labels: #@ labels_for_comp("app-v2", "v2")
+spec:
+  replicas: 1
+  selector:
+    matchLabels: #@ labels_for_comp("app-v2", "v2")
+  template:
+    metadata:
+      labels: #@ labels_for_comp("app-v2", "v2")
+    spec:
+      containers:
+      - name: app
+        image: alexandreroman/hello:v2
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8080
+        livenessProbe:
+          httpGet:
+            port: http
+            path: /actuator/health
+          initialDelaySeconds: 60
+        readinessProbe:
+          httpGet:
+            port: http
+            path: /actuator/health
+          initialDelaySeconds: 15

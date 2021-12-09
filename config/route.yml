@@ -1,0 +1,29 @@
+#@ load("@ytt:data", "data")
+---
+#! Make sure to deploy Contour first:
+#! see https://projectcontour.io/getting-started.
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata: 
+  name: app
+  namespace: #@ data.values.NAMESPACE
+spec: 
+  virtualhost:
+    #! Set your domain here.
+    #!
+    #! If you do not own a domain, you can still hit the endpoint using
+    #! these commands:
+    #! $ APP_ADDR=$(kubectl -n projectcontour get svc contour -o json | jq -r ".status.loadBalancer.ingress[].ip")
+    #! $ curl -w "\n" -H "Host: foobar.com" $APP_ADDR
+    fqdn: #@ data.values.DOMAIN
+  routes: 
+  - match: / 
+    services:
+    #! All traffic is routed to app-v1 by default.
+    - name: app-v1
+      port: 8080
+      weight: 100
+    #! Update attribute weight to route traffic between app-v1 and app-v2.
+    - name: app-v2
+      port: 8080
+      weight: 0

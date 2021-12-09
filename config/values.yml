@@ -1,0 +1,10 @@
+#@data/values
+---
+#! Set application name.
+APP: k8s-contour-bgd
+
+#! Set target namespace.
+NAMESPACE: k8s-contour-bgd
+
+#! Set application domain to use.
+DOMAIN: bgd.example.com

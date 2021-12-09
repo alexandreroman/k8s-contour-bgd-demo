@@ -1,0 +1,28 @@
+#@ load("@ytt:data", "data")
+#@ load("helpers.star", "labels_for_comp")
+---
+apiVersion: v1
+kind: Service
+metadata:
+  #! Service name is used by ingress.
+  name: app-v1
+  namespace: #@ data.values.NAMESPACE
+spec:
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+  selector: #@ labels_for_comp("app-v1", "v1")
+---
+apiVersion: v1
+kind: Service
+metadata:
+  #! Service name is used by ingress.
+  name: app-v2
+  namespace: #@ data.values.NAMESPACE
+spec:
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+  selector: #@ labels_for_comp("app-v2", "v2")
